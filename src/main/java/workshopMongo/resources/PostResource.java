@@ -1,24 +1,17 @@
 package workshopMongo.resources;
 
-import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import workshopMongo.DTO.UserDTO;
 import workshopMongo.domain.Post;
-import workshopMongo.domain.User;
+import workshopMongo.resources.util.URL;
 import workshopMongo.services.PostService;
 
 @RestController
@@ -36,5 +29,14 @@ public class PostResource {
 		return ResponseEntity.ok(post);
 	}
 	
-
+	
+	@GetMapping(value = "/titlesearch")
+	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
+		text = URL.decodeParam(text);
+		List<Post> list = service.findByTitle(text);
+		
+		return ResponseEntity.ok(list);
+	}
+	
+	
 }
